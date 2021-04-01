@@ -391,7 +391,7 @@ var InitDemo = function ()
 	window.addEventListener("keydown", function (event) {
 		var MoveSpeed = 0.25;
 		switch (event.keyCode) {
-			// 89 = y, 82 = r, 37 = left, 38 = up, 39 = right, 40 = 
+			// 89 = y, 82 = r, 37 = left, 38 = up, 39 = right, 40 = down
 			case 89:
 				yDown = !yDown;
 				break;
