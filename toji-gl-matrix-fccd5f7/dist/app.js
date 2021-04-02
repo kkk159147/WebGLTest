@@ -235,7 +235,7 @@ var InitDemo = function ()
 	
 	var xAngle = 0;
 	var yAngle = 0;
-	var rotateSpeed = 0.00025 * performance.now();
+	var rotateSpeed = 0.0005 * performance.now();
 
 	var RotateObject = function () 
 	{
@@ -253,11 +253,11 @@ var InitDemo = function ()
 		canvasDraw(worldMatrix);
 	};
 
-	var ObjectMove = function (xPosition = 0, yPosition = 0)
+	var ObjectMove = function ()
     {
 		
-		xPosition = -(xPx - beforePosition[0]) / canvas.offsetWidth * 10;
-		yPosition = -(yPx - beforePosition[1]) / canvas.offsetHeight * 6;
+		var xPosition = -(xPx - beforePosition[0]) / canvas.offsetWidth * 10;
+		var yPosition = -(yPx - beforePosition[1]) / canvas.offsetHeight * 6;
 
 		// glMatrix.mat4.translate(transMatrix, identityMatrix, [-xPosition, -yPosition, 0]);
 		worldMatrix[12] += xPosition;
@@ -271,6 +271,8 @@ var InitDemo = function ()
 	};
 
 	function canvasDraw(drawMatrix){
+
+		
 		gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, drawMatrix);
 
 		gl.clearColor(0.75, 0.85, 0.8, 1.0); // - 배경색상 r,g,b,a (0~1)
@@ -281,9 +283,9 @@ var InitDemo = function ()
 	
 	function ScaleChange(scaleValue){
 		glMatrix.mat4.scale(scaleMatrix, identityMatrix, [scaleValue, scaleValue, scaleValue]);
-
+		
 		glMatrix.mat4.mul(worldMatrix, worldMatrix, scaleMatrix);
-
+		
 		console.log(worldMatrix);
 
 		canvasDraw(worldMatrix);
@@ -370,9 +372,9 @@ var InitDemo = function ()
 		} 
     }
 
-    canvas.addEventListener("mousedown", MouseDown, false);
-    canvas.addEventListener("mousemove", MouseMove, false);
-    canvas.addEventListener("mouseup", MouseUp, false);
+    canvas.addEventListener('mousedown', MouseDown, false);
+    canvas.addEventListener('mousemove', MouseMove, false);
+    canvas.addEventListener('mouseup', MouseUp, false);
 	window.addEventListener('wheel', function(event){
 		if (event.wheelDelta > 0 || event.detail < 0) {
 			// scroll up
@@ -388,10 +390,10 @@ var InitDemo = function ()
 		console.log(scaleCount);
 	});
 
-	window.addEventListener("keydown", function (event) {
+	window.addEventListener('keydown', function (event) {
 		var MoveSpeed = 0.25;
 		switch (event.keyCode) {
-			// 89 = y, 82 = r, 37 = left, 38 = up, 39 = right, 40 = down
+			// 89 = y, 82 = r, 37 = left, 38 = up, 39 = right, 40 = down, w = 87, a = 65, 83 = s, 68 = d
 			case 89:
 				yDown = !yDown;
 				break;
@@ -400,18 +402,22 @@ var InitDemo = function ()
 				RotateObject();
 				break;
 			case 37:
+			case 65:
 				worldMatrix[12] += MoveSpeed;
 				canvasDraw(worldMatrix);
 				break;
 			case 38:
+			case 87:
 				worldMatrix[13] += MoveSpeed;
 				canvasDraw(worldMatrix);
 				break;
 			case 39:
+			case 68:
 				worldMatrix[12] -= MoveSpeed;
 				canvasDraw(worldMatrix);
 				break;
 			case 40:
+			case 83:
 				worldMatrix[13] -= MoveSpeed;
 				canvasDraw(worldMatrix);
 				break;
